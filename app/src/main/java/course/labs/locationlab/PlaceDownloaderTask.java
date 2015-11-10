@@ -42,26 +42,29 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 	private static String USERNAME = "YOUR_ACCOUNT_NAME";
 
 	private HttpURLConnection mHttpUrl;
+
 	private WeakReference<PlaceViewActivity> mParent;
+
 	private static Bitmap sStubBitmap = null;
-	private static final Location sMockLoc1 = new Location(
-			LocationManager.NETWORK_PROVIDER);
-	private static final Location sMockLoc2 = new Location(
-			LocationManager.NETWORK_PROVIDER);
-	private static final Location sMockLoc3 = new Location(
-			LocationManager.NETWORK_PROVIDER);
+
+	private static final Location sMockLoc1 = new Location(LocationManager.NETWORK_PROVIDER);
+
+	private static final Location sMockLoc2 = new Location(LocationManager.NETWORK_PROVIDER);
+
+	private static final Location sMockLoc3 = new Location(LocationManager.NETWORK_PROVIDER);
+
 	private static String sMockCountryName1, sMockCountryNameInvalid,
 			sMockPlaceName1, sMockPlaceName2, sMockPlaceNameInvalid;
 
-	public PlaceDownloaderTask(PlaceViewActivity parent, boolean hasNetwork) {
+	public PlaceDownloaderTask(PlaceViewActivity parent, boolean hasNetwork)
+	{
 		super();
 
 		mParent = new WeakReference<PlaceViewActivity>(parent);
 		mHasNetwork = hasNetwork;
 
 		if (null != parent) {
-			sStubBitmap = BitmapFactory.decodeResource(parent.getResources(),
-					R.drawable.stub);
+			sStubBitmap = BitmapFactory.decodeResource(parent.getResources(), R.drawable.stub);
 
 			sMockLoc1.setLatitude(37.422);
 			sMockLoc1.setLongitude(-122.084);
@@ -80,7 +83,8 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 	}
 
 	@Override
-	protected PlaceRecord doInBackground(Location... location) {
+	protected PlaceRecord doInBackground(Location... location)
+	{
 		PlaceRecord place = null;
 
 		if (mHasNetwork) {
@@ -99,7 +103,7 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 			place = new PlaceRecord();
 			place.setLocation(location[0]);
 			place.setFlagBitmap(sStubBitmap);
-			
+
 			if (place.intersects(sMockLoc1)) {
 				place.setCountryName(sMockCountryName1);
 				place.setPlace(sMockPlaceName1);
@@ -117,8 +121,8 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 	}
 
 	@Override
-	protected void onPostExecute(PlaceRecord result) {
-
+	protected void onPostExecute(PlaceRecord result)
+	{
 		// If you've acquired Place data and the parent is non-null
 		// call parent to add the PlaceBadge
 		if (null != result && null != mParent.get()) {
@@ -126,7 +130,8 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 		}
 	}
 
-	private PlaceRecord getPlaceFromURL(String... params) {
+	private PlaceRecord getPlaceFromURL(String... params)
+	{
 		String result = null;
 		BufferedReader in = null;
 
@@ -160,7 +165,8 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 		return placeDataFromXml(result);
 	}
 
-	private Bitmap getFlagFromURL(String flagUrl) {
+	private Bitmap getFlagFromURL(String flagUrl)
+	{
 		InputStream in = null;
 		Log.i("temp", flagUrl);
 		try {
@@ -187,7 +193,8 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 				R.drawable.stub);
 	}
 
-	private static PlaceRecord placeDataFromXml(String xmlString) {
+	private static PlaceRecord placeDataFromXml(String xmlString)
+	{
 		DocumentBuilder builder;
 		String countryName = "";
 		String countryCode = "";
@@ -197,8 +204,7 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 
 		try {
 			builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new InputSource(new StringReader(
-					xmlString)));
+			Document document = builder.parse(new InputSource(new StringReader(xmlString)));
 			NodeList list = document.getDocumentElement().getChildNodes();
 			for (int i = 0; i < list.getLength(); i++) {
 				Node curr = list.item(i);
@@ -229,21 +235,21 @@ public class PlaceDownloaderTask extends AsyncTask<Location, Void, PlaceRecord> 
 			e.printStackTrace();
 		}
 
-		return new PlaceRecord(generateFlagURL(countryCode), countryName,
-				placeName);
+		return new PlaceRecord(generateFlagURL(countryCode), countryName, placeName);
 	}
 
 	// URL for acquiring Place data
-	private static String generateURL(String username, Location location) {
+	private static String generateURL(String username, Location location)
+	{
 		return "http://www.geonames.org/findNearbyPlaceName?username="
 				+ username + "&style=full&lat=" + location.getLatitude()
 				+ "&lng=" + location.getLongitude();
 	}
 
 	// URL for acquiring flag image based on country code
-	private static String generateFlagURL(String countryCode) {
+	private static String generateFlagURL(String countryCode)
+	{
 		return "http://www.geonames.org/flags/x/"
 				+ countryCode.toLowerCase(Locale.US) + ".gif";
 	}
-
 }

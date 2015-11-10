@@ -15,7 +15,8 @@ import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class PlaceViewActivity extends ListActivity implements LocationListener {
+public class PlaceViewActivity extends ListActivity implements LocationListener
+{
 	private static final long FIVE_MINS = 5 * 60 * 1000;
 	private static final String TAG = "Lab-Location";
 
@@ -37,7 +38,8 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 	private MockLocationProvider mMockLocationProvider;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 
 		// Set up the app's user interface. This class is a ListActivity,
@@ -59,8 +61,8 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 
 		// There is a current location, but the user has already acquired a
 		// PlaceBadge for this location - issue a Toast message with the text -
-		// "You already have this location badge." 
-		// Use the PlaceRecord class' intersects() method to determine whether 
+		// "You already have this location badge."
+		// Use the PlaceRecord class' intersects() method to determine whether
 		// a PlaceBadge already exists for a given location
 
 		// There is a current location for which the user does not already have
@@ -73,22 +75,7 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 			public void onClick(View arg0) {
 
 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+
 			}
 
 		});
@@ -100,7 +87,8 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 	}
 
 	@Override
-	protected void onResume() {
+	protected void onResume()
+	{
 		super.onResume();
 
 		startMockLocationManager();
@@ -120,58 +108,45 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 	}
 
 	@Override
-	protected void onPause() {
-
+	protected void onPause()
+	{
 		// TODONE - unregister for location updates
 		mLocationManager.removeUpdates(this);
-        
+
 		shutdownMockLocationManager();
 		super.onPause();
 	}
 
 	// Callback method used by PlaceDownloaderTask
-	public void addNewPlace(PlaceRecord place) {
-	
+	public void addNewPlace(PlaceRecord place)
+	{
 		// TODO - Attempt to add place to the adapter, considering the following cases
 
 		// A PlaceBadge for this location already exists - issue a Toast message
-		// with the text - "You already have this location badge." Use the PlaceRecord 
+		// with the text - "You already have this location badge." Use the PlaceRecord
 		// class' intersects() method to determine whether a PlaceBadge already exists
 		// for a given location. Do not add the PlaceBadge to the adapter
-		
+
 		// The place is null - issue a Toast message with the text
 		// "PlaceBadge could not be acquired"
 		// Do not add the PlaceBadge to the adapter
-		
-		// The place has no country name - issue a Toast message
-		// with the text - "There is no country at this location". 
-		// Do not add the PlaceBadge to the adapter
-		
-		// Otherwise - add the PlaceBadge to the adapter
-		
 
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+		// The place has no country name - issue a Toast message
+		// with the text - "There is no country at this location".
+		// Do not add the PlaceBadge to the adapter
+
+		// Otherwise - add the PlaceBadge to the adapter
+
+
+
+
+
 	}
 
 	// LocationListener methods
 	@Override
-	public void onLocationChanged(Location currentLocation) {
-
+	public void onLocationChanged(Location currentLocation)
+	{
 		// TODO - Update location considering the following cases.
 		// 1) If there is no last location, set the last location to the current
 		// location.
@@ -180,13 +155,13 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 		// 3) If the current location is newer than the last locations, keep the
 		// current location.
 
-        
-        
-        
-        
-        
-        
-			mLastLocationReading = null;
+
+
+
+
+
+
+		mLastLocationReading = null;
 	}
 
 	@Override
@@ -205,44 +180,49 @@ public class PlaceViewActivity extends ListActivity implements LocationListener 
 	}
 
 	// Returns age of location in milliseconds
-	private long ageInMilliseconds(Location location) {
+	private long ageInMilliseconds(Location location)
+	{
 		return System.currentTimeMillis() - location.getTime();
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
 		switch (item.getItemId()) {
-		case R.id.delete_badges:
-			mAdapter.removeAllViews();
-			return true;
-		case R.id.place_one:
-			mMockLocationProvider.pushLocation(37.422, -122.084);
-			return true;
-		case R.id.place_no_country:
-			mMockLocationProvider.pushLocation(0, 0);
-			return true;
-		case R.id.place_two:
-			mMockLocationProvider.pushLocation(38.996667, -76.9275);
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
+			case R.id.delete_badges:
+				mAdapter.removeAllViews();
+				return true;
+			case R.id.place_one:
+				mMockLocationProvider.pushLocation(37.422, -122.084);
+				return true;
+			case R.id.place_no_country:
+				mMockLocationProvider.pushLocation(0, 0);
+				return true;
+			case R.id.place_two:
+				mMockLocationProvider.pushLocation(38.996667, -76.9275);
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
-	private void shutdownMockLocationManager() {
+	private void shutdownMockLocationManager()
+	{
 		if (mMockLocationOn) {
 			mMockLocationProvider.shutdown();
 		}
 	}
 
-	private void startMockLocationManager() {
+	private void startMockLocationManager()
+	{
 		if (!mMockLocationOn) {
 			mMockLocationProvider = new MockLocationProvider(
 					LocationManager.NETWORK_PROVIDER, this);
